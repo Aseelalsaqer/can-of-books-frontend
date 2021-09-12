@@ -1,7 +1,11 @@
+
 import React from 'react';
 import Header from './Header';
+import BestBooks from './BestBooks';
 import IsLoadingAndError from './IsLoadingAndError';
 import Footer from './Footer';
+import Profile from './Profile';
+import Login from './Login';
 import {
   BrowserRouter as Router,
   Switch,
@@ -11,6 +15,7 @@ import {
 class App extends React.Component {
 
   render() {
+    const isAuthenticated =this.props.auth0;
     console.log('app', this.props);
     return(
       <>
@@ -19,7 +24,14 @@ class App extends React.Component {
             <Header />
             <Switch>
               <Route exact path="/">
+                {isAuthenticated && <BestBooks/>}
+                {!isAuthenticated && <Login/>}  
+                 
                 {/* TODO: if the user is logged in, render the `BestBooks` component, if they are not, render the `Login` component */}
+              </Route>
+              
+              <Route path="/profile">
+              <Profile />
               </Route>
               {/* TODO: add a route with a path of '/profile' that renders a `Profile` component */}
             </Switch>
