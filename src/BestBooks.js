@@ -38,7 +38,7 @@ class MyFavoriteBooks extends React.Component {
       bookName: event.target.bookName.value,
       description: event.target.description.value,
       status: event.target.status.value,
-      myEmail: email,
+      email: email,
     };
     axios
       .post(`http://localhost:3222/addBook`, bookObj)
