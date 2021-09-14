@@ -20,7 +20,7 @@ class MyFavoriteBooks extends React.Component {
     const { user } = this.props.auth0;
     const email = user.email;
     axios
-      .get(`http://localhost:3222/mybooks?email=${email}`)
+      .get(`https://aseel-books.herokuapp.com/mybooks?email=${email}`)
       .then((result) => {
         this.setState({
           bestBooksArr: result.data,
@@ -41,7 +41,7 @@ class MyFavoriteBooks extends React.Component {
       email: email,
     };
     axios
-      .post(`http://localhost:3222/addBook`, bookObj)
+      .post(`https://aseel-books.herokuapp.com/addBook`, bookObj)
       .then((result) => {
         this.setState({
           bestBooksArr: result.data,
@@ -56,7 +56,7 @@ class MyFavoriteBooks extends React.Component {
     const { user } = this.props.auth0;
     const email = user.email;
     axios
-      .delete(`http://localhost:3222/deletebook/${id}?email=${email}`)
+      .delete(`https://aseel-books.herokuapp.com/deletebook/${id}?email=${email}`)
       .then((result) => {
         this.setState({
           bestBooksArr: result.data,
