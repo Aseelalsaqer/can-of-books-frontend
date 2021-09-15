@@ -19,6 +19,9 @@ class BookItem extends React.Component {
           <button onClick={() => this.props.deleteBook(this.props.item._id)}>
             Delete
           </button>
+          <button onClick={() => this.props.showUpdateForm()}>
+            Update
+          </button>
         </Card>
       </>
     );
