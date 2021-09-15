@@ -6,7 +6,7 @@ import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { withAuth0 } from "@auth0/auth0-react";
 import BookItem from "./BookItem";
-
+import UpdateForm from "./UpdateForm";
 import BookFormModal from "./BookFormModal";
 class MyFavoriteBooks extends React.Component {
   constructor(props) {
@@ -14,6 +14,7 @@ class MyFavoriteBooks extends React.Component {
     this.state = {
       bestBooksArr: [],
       showClick: false,
+      showModal:false,
     };
   }
   componentDidMount = () => {
@@ -35,7 +36,7 @@ class MyFavoriteBooks extends React.Component {
     const { user } = this.props.auth0;
     const email = user.email;
     const bookObj = {
-      bookName: event.target.bookName.value,
+      title: event.target.title.value,
       description: event.target.description.value,
       status: event.target.status.value,
       email: email,
@@ -66,6 +67,44 @@ class MyFavoriteBooks extends React.Component {
         console.log("error in deleting Book");
       });
   };
+  updateBook=async(event)=>{
+    event.preventDefault();
+    const{user}=this.props.auth0;
+    const email=user.email;
+    const obj={
+      title: event.target.title.value,
+      description: event.target.description.value,
+      status: event.target.status.value,
+      email: email,
+    }
+    await axios
+    .put(`https://aseel-books.herokuapp.com/updatebook/${this.state.id}`,obj)
+    .then(result=>{
+      this.setState({
+        BookArray:result.data,
+        showFlag:false
+      })
+    })
+    .catch(err=>{
+      console.log("Error on updating");
+    })
+  }
+  
+  handleClose = ()=> {
+    this.setState({
+      showModal: false
+    })
+  }
+  showUpdateForm = (item)=>{
+    this.setState({
+      showModal:true,
+      title:item.title,
+      description:item.description,
+      status:item.status,
+      id:item._id,
+      
+    })
+  }
   render() {
     const { isAuthenticated } = this.props.auth0;
     return (
@@ -85,8 +124,15 @@ class MyFavoriteBooks extends React.Component {
         {isAuthenticated &&
           this.state.bestBooksArr.map((item) => {
             return <BookItem item={item} 
-            deleteBook={this.deleteBook}/>;
+            deleteBook={this.deleteBook}
+            showUpdateForm = {this.showUpdateForm}
+            />
+           
           })}
+          <UpdateForm
+          show = {this.state.showModal}
+          handleClose = {this.handleClose}
+          />
       </>
     );
   }
